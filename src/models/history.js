@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         guessId: DataTypes.INTEGER,
         expertId: DataTypes.INTEGER,
         description: DataTypes.TEXT,
+        files: DataTypes.TEXT
     }, {
         sequelize,
         modelName: 'History',

@@ -15,8 +15,12 @@ let getHomePage = async (req, res) => {
     let data = await db.user.findAll();
     return res.render('homepage.ejs');
 }
+let getViewPage = (req, res) => {
+    return res.render('crud.ejs');
+}
 
 
 module.exports = {
     getHomePage: getHomePage,
+    getViewPage: getViewPage,
 }

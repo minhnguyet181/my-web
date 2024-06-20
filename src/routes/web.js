@@ -7,7 +7,7 @@ let initWebRoutes = (app) => {
     router.get('/moon', (req, res) => {
         return res.send('To be no1 ')
     });
-
+    router.get('/tobeno1', homeControl.getViewPage);
     return app.use("/", router);
 
 }
