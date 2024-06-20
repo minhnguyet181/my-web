@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         expertId: DataTypes.INTEGER,
         guessId: DataTypes.INTEGER,
         date: DataTypes.DATE,
-        timeType: DataTypes.BOOLEAN,
+        timeType: DataTypes.STRING,
     }, {
         sequelize,
         modelName: 'Booking',
     });
-    return Bookings;
+    return Booking;
 };
