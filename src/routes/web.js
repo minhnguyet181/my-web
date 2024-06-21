@@ -7,7 +7,10 @@ let initWebRoutes = (app) => {
     router.get('/moon', (req, res) => {
         return res.send('To be no1 ')
     });
-    router.get('/tobeno1', homeControl.getViewPage);
+    router.get('/tobeno1', (req, res) => {
+        return res.render('crud.ejs');
+    });
+    router.post('/post-crud', homeControl.postCRUD);
     return app.use("/", router);
 
 }
