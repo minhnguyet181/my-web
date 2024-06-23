@@ -16,7 +16,6 @@
 </style>
 
 <body>
-    <h1>you zuo jiu zuo di yi ming</h1>
     <table style="width: 100%;">
         <tr>
             <th>Email</th>
@@ -24,6 +23,7 @@
             <th>Lastname</th>
             <th>Address</th>
             <th>Gender</th>
+            <th>Actions</th>
         </tr>
         <% for (let i=0; i< dataTable.length; i++){ %>
             <tr>
@@ -42,11 +42,39 @@
                 <td>
                     <%= dataTable[i].gender %>
                 </td>
+                <td>
+                    <a href="/edit-crud?id=<%= dataTable[i].id %>" class="btn-edit" type="button">Edit</a>
+                    <a href="" class="btn-delete" type="button">Delete</a>
+                </td>
 
             </tr>
             <%} %>
     </table>
+    <style>
+        .btn-edit {
+            outline: none;
+            border: none;
+            background-color: rgb(97, 150, 243);
+            height: 22px;
+            width: 60px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+        }
 
+        .btn-delete {
+            outline: none;
+            border: none;
+            background-color: rgb(169, 175, 190);
+            height: 22px;
+            width: 60px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+        }
+    </style>
 </body>
 
 </html>

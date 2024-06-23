@@ -32,6 +32,17 @@ let postCRUD = async (req, res) => {
     console.log(message);
     return res.send('post crud from server');
 }
+let editCrud = async (req, res) => {
+    let userId = req.query.id;
+    if (userId) {
+        let userData = await Crudservice.getUserIdentify(userId);
+        return res.render('editCrud')
+    }
+    else {
+        return res.send('ming xing da ');
+    }
+}
+
 
 
 module.exports = {
@@ -39,5 +50,5 @@ module.exports = {
     getViewPage: getViewPage,
     getcrud: getcrud,
     postCRUD: postCRUD,
-
+    editCrud: editCrud,
 }
