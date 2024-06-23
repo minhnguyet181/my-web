@@ -36,13 +36,21 @@ let editCrud = async (req, res) => {
     let userId = req.query.id;
     if (userId) {
         let userData = await Crudservice.getUserIdentify(userId);
-        return res.render('editCrud')
+        return res.render('editCrud', {
+            user: userData
+        })
     }
     else {
         return res.send('ming xing da ');
     }
 }
-
+let putCrud = async (req, res) => {
+    let data = req.body
+    let allusers = await Crudservice.updateUserData(data);
+    return res.render('display-crud', {
+        dataTable: allusers
+    })
+}
 
 
 module.exports = {
@@ -51,4 +59,5 @@ module.exports = {
     getcrud: getcrud,
     postCRUD: postCRUD,
     editCrud: editCrud,
+    putCrud: putCrud,
 }
