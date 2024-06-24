@@ -15,7 +15,7 @@ let getHomePage = async (req, res) => {
     let data = await db.user.findAll();
     return res.render('homepage.ejs');
 }
-let getViewPage = (req, res) => {
+let createUser = (req, res) => {
     return res.render('crud.ejs');
 }
 let getcrud = async (req, res) => {
@@ -62,7 +62,7 @@ let deleteCrud = async (req, res) => {
 
 module.exports = {
     getHomePage: getHomePage,
-    getViewPage: getViewPage,
+    createUser: createUser,
     getcrud: getcrud,
     postCRUD: postCRUD,
     editCrud: editCrud,
