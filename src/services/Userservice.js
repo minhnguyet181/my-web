@@ -60,8 +60,29 @@ let checkUseremail = (userEmail) => {
         }
     })
 }
+let getAllusers = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = '';
+            if (userId === 'all') {
+                users = await db.User.findAll({
+
+                })
+            } else {
+                users = await db.User.findOne({
+                    where: { id: userId }
+                })
+            }
+
+        } catch (e) {
+            reject(e);
+        }
+
+    })
+}
 
 module.exports = {
     handleUserLogin: handleUserLogin,
     checkUseremail: checkUseremail,
+    getAllusers: getAllusers,
 }

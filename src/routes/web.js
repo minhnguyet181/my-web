@@ -17,7 +17,7 @@ let initWebRoutes = (app) => {
     router.post('/put-crud', homeControl.putCrud);
     router.get('/delete-crud', homeControl.deleteCrud);
     router.post('/api/login', userController.handleLogin);
-
+    router.get('/api/get-all-users', userController.handleAllUser);
 
     return app.use("/", router);
 
