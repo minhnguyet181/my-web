@@ -2,6 +2,7 @@ import { where } from "sequelize"
 import db from "../models/index"
 import bcrypt from "bcryptjs"
 import { resolveInclude } from "ejs";
+// import { all } from "sequelize/types/lib/operators";
 const salt = bcrypt.genSaltSync(10);
 let handleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
@@ -10,7 +11,7 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUseremail(email);
             if (isExist) {
                 let user = await db.User.findOne({
-                    attributes: ['email', 'roleId', 'password'],
+                    attributes: ['email', 'roleId', 'password', 'firstName', 'lastName'],
                     where: { email: email },
                     raw: true,
                 });
@@ -101,18 +102,20 @@ let createNewUser = (data) => {
                     errCode: 1,
                     message: 'Your email is exist. Please try another email'
                 })
+            } else {
+                let hashPW = await hashPassword(data.password);
+                await db.User.create({
+                    email: data.email,
+                    password: hashPW,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    address: data.address,
+                    phoneNumber: data.phoneNumber,
+                    gender: data.gender === '1' ? true : false,
+                    roleId: data.roleId,
+                })
             }
-            let hashPW = await hashPassword(data.password);
-            await db.User.create({
-                email: data.email,
-                password: hashPW,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                address: data.address,
-                phoneNumber: data.phoneNumber,
-                gender: data.gender === '1' ? true : false,
-                roleId: data.roleId,
-            })
+
             resolve({
                 errCode: 0,
                 message: 'Done'
@@ -177,6 +180,31 @@ let updateUserData = (data) => {
         }
     })
 }
+let getAllCodes = (typeIp) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!typeIp) {
+                resolve({
+                    errCode: 1,
+                    message: 'Error'
+                })
+            } else {
+                let res = {};
+                let allcode = await db.Allcode.findAll({
+                    where: { type: typeIp }
+                });
+                res.errCode = 0;
+                res.data = allcode;
+
+                resolve(res);
+            }
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
 module.exports = {
     handleUserLogin: handleUserLogin,
     checkUseremail: checkUseremail,
@@ -184,4 +212,5 @@ module.exports = {
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
+    getAllCodes: getAllCodes,
 }
