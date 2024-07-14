@@ -14,7 +14,7 @@ module.exports = {
             expertId: {
                 type: Sequelize.INTEGER
             },
-            guessId: {
+            clientId: {
                 type: Sequelize.INTEGER
             },
             date: {
