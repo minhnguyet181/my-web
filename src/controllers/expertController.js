@@ -41,8 +41,21 @@ let getInfoExpert = async (req, res) => {
         })
     }
 }
+let saveInfoExpert = async (req, res) => {
+    try {
+        let resp = await expertService.saveExperts(req.body);
+        return res.status(200).json(resp)
+
+    } catch (e) {
+        return res.status(200).json({
+            errCode: -1,
+            message: 'Error!!!!!!!!!'
+        })
+    }
+}
 module.exports = {
     getTopExpert: getTopExpert,
     getInfoExpert: getInfoExpert,
-    getAllExpert: getAllExpert
+    getAllExpert: getAllExpert,
+    saveInfoExpert: saveInfoExpert
 }

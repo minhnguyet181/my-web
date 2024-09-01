@@ -82,8 +82,35 @@ let getAllExperts = () => {
         }
     })
 }
+let saveExperts = (inputData) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputData.id || !inputData.contentHTML || !inputData.contentMarkdown) {
+                resolve({
+                    errCode: 1,
+                    message: 'Missing parameter'
+                })
+            } else {
+                await db.Markdown.create({
+                    contentHTML: inputData.contentHTML,
+                    contentMarkdown: inputData.contentMarkdown,
+                    description: inputData.description,
+                    expertId: inputData.expertId
+                })
+            }
+            resolve({
+                errCode: 0,
+                message: 'Save infor succeed'
+            })
+
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 module.exports = {
     getTopExpert: getTopExpert,
     getDetailExpert: getDetailExpert,
-    getAllExperts: getAllExperts
+    getAllExperts: getAllExperts,
+    saveExperts: saveExperts
 }

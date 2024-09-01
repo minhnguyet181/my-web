@@ -8,14 +8,14 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             }, contentHTML: {
-                allowNull: true,
+                allowNull: false,
                 type: Sequelize.TEXT('long')
             },
             contentMarkdown: {
-                allowNull: true,
+                allowNull: false,
                 type: Sequelize.TEXT('long')
             },
-            desciption: {
+            description: {
                 allowNull: true,
                 type: Sequelize.TEXT('long')
             },
