@@ -64,10 +64,26 @@ let bulkSchedule = async(req,res) =>{
         })
     }
 }
+let getScheduleExpertByDate = async (req, res) => {
+    try {
+        let object = await expertService.getScheduleExpertByDate(req.body.expertId, req.body.date);
+        let data = object.schedule;
+        let expert = object.expert;
+        return res.status(200).json({
+            status: 1,
+            message: data,
+            expert: expert
+        });
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json(e);
+    }
+};
 module.exports = {
     getTopExpert: getTopExpert,
     getInfoExpert: getInfoExpert,
     getAllExpert: getAllExpert,
     saveInfoExpert: saveInfoExpert,
-    bulkSchedule:bulkSchedule
+    bulkSchedule:bulkSchedule,
+    getScheduleExpertByDate:getScheduleExpertByDate
 }

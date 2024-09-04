@@ -158,10 +158,56 @@ return new Promise (async (resolve,reject) =>{
     }
 })
 }
+let getScheduleExpertByDate = (id, date) => {
+    return new Promise((async (resolve, reject) => {
+        try {
+            let schedule = await db.Schedule.findAll({
+                where: {
+                    expertId: id, date: date, sumBooking: { [Op.lt]: maxBooking }
+                }
+            });
+            let expert = await getExpertById(id);
+
+            let dateNow = new Date();
+            let currentDate = moment().format('DD/MM/YYYY');
+            let currentHour = `${dateNow.getHours()}:${dateNow.getMinutes()}`;
+            let timeNow = moment(`${currentDate} ${currentHour}`, "DD/MM/YYYY hh:mm").toDate();
+
+            schedule.forEach((sch, index) => {
+                let startTime = sch.time.split('-')[0];
+                let timeSchedule = moment(`${sch.date} ${startTime}`, "DD/MM/YYYY hh:mm").toDate();
+                //isDisable nếu time hiện tại > time kế hoạch
+                sch.setDataValue('isDisable', timeNow > timeSchedule);
+
+            });
+
+            resolve({
+                schedule: schedule,
+                expert:expert
+            });
+        } catch (e) {
+            reject(e);
+        }
+    }));
+};
+let getExpertById = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let doctor = await db.User.findOne({
+                where: { id: id, roleId: 'R2' }
+            });
+            resolve(doctor);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     getTopExpert: getTopExpert,
     getDetailExpert: getDetailExpert,
     getAllExperts: getAllExperts,
     saveExperts: saveExperts,
-    bulkSchedule:bulkSchedule
+    bulkSchedule:bulkSchedule,
+    getExpertById: getExpertById,
+    getScheduleExpertByDate:getScheduleExpertByDate
 }
