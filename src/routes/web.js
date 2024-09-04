@@ -26,6 +26,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-all-expert', expertController.getAllExpert);
     router.get('/api/get-info-expert', expertController.getInfoExpert);
     router.post('/api/save-info-expert', expertController.saveInfoExpert);
+    router.post('/api/bulk-create-schedule', expertController.bulkSchedule);
 
     return app.use("/", router);
 

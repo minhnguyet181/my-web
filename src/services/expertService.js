@@ -1,7 +1,9 @@
-
 import { where } from "sequelize";
 import db from "../models/index";
-
+require('dotenv').config();
+import _ from 'lodash';
+import { raw } from "body-parser";
+const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 let getTopExpert = (limitInput) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -108,9 +110,58 @@ let saveExperts = (inputData) => {
         }
     })
 }
+let bulkSchedule =(data) =>{
+return new Promise (async (resolve,reject) =>{
+    try{
+      if(!data.arrSchedule || !data.expertId || !data.formatedDate) {
+        resolve ({
+            errCode:1,
+            message:'Missing required para'
+        })
+      } else{
+        let schedule = data.arrSchedule;
+        if (schedule && schedule.length >0 ){
+            schedule = schedule.map(item =>{
+                item.maxNb = MAX_NUMBER_SCHEDULE;
+                return item;
+            })
+        }
+        let existing = await db.Schedule.findAll(
+            {
+                where:{ expertId: data.expertId,
+                    date: data.formatedDate
+                },
+                attributes:['timeType', 'date', 'expertId', 'maxNb'],
+                raw:true
+            }
+        );
+        if( existing && existing.length >0){
+            existing = existing.map(item =>{
+                item.date = new Date(item.date).getTime();
+                return item;
+            })
+        }
+        let toCreate = _.differenceWith(schedule,existing,(a,b)=>{
+            return a.timeType === b.timeType && a.date === b.date;
+        });
+        if( toCreate && toCreate.length >0)
+        {
+            await db.Schedule.bulkSchedule(toCreate);
+        }
+        resolve({
+            errCode:0,
+            message:"Done!"
+        })
+      }
+    } catch(e) {
+        reject(e)
+    }
+})
+}
 module.exports = {
     getTopExpert: getTopExpert,
     getDetailExpert: getDetailExpert,
     getAllExperts: getAllExperts,
-    saveExperts: saveExperts
+    saveExperts: saveExperts,
+    bulkSchedule:bulkSchedule
 }

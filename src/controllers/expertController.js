@@ -53,9 +53,21 @@ let saveInfoExpert = async (req, res) => {
         })
     }
 }
+let bulkSchedule = async(req,res) =>{
+    try{
+    let infor = await expertService.bulkSchedule(req.body);
+    return res.status(200).json(infor)
+    } catch(e) {
+        return res.status(200).json({
+            errCode: -1,
+            message: 'Error!!!!!!!!!'
+        })
+    }
+}
 module.exports = {
     getTopExpert: getTopExpert,
     getInfoExpert: getInfoExpert,
     getAllExpert: getAllExpert,
-    saveInfoExpert: saveInfoExpert
+    saveInfoExpert: saveInfoExpert,
+    bulkSchedule:bulkSchedule
 }
